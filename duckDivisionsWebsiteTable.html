@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://unpkg.com/tabulator-tables@5.2.3/dist/css/tabulator_modern.min.css" rel="stylesheet">
+    <style>
+      body{
+      background-color:#fff;
+      }
+    </style>
+  <body>
+    <div id="data-table"></div>
+    <div id="alerts"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.4.0/luxon.min.js" integrity="sha512-v1zUTZ9zv9Wb2scL/ANxXM6m7yegm/W5SN8SRHNFADdZIuSFFkrEBjNxO803DdFkjoCcJ88g1WHRVlLN6K/O1A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.4.0/luxon.js" integrity="sha512-mG5s2PtixGEVGHGdHEP/t09HMp5LS4O7tGSveeGniCbzeZKIxsPdmExeabz8xmxcSe+wfYvSMbe6G2c3d9ZQXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.2.3/dist/js/tabulator.min.js"></script>
+    <script>
+      // http://tabulator.info/
+      const elements = {}
+      document.addEventListener("DOMContentLoaded",pageLoad)
+
+      function pageLoad(){
+        elements.alerts = document.getElementById("alerts")
+        loadData()
+      }
+
+
+
+      function loadData(){
+        google.script.run
+        .withSuccessHandler((jsData) => {
+
+          const table = new Tabulator("#data-table", {
+            // if data successfully
+            data:jsData, //assign data to table
+            layout:"fitColumns", //fit columns to width of table (optional)
+            pagination:true,
+            paginationSize:10,
+            columnDefaults:{
+              hozAlign:"center",
+              headerHozAlign:"center",
+              headerSort:true
+            },
+            columns:[ //Define Table Columns
+
+              {title:"Presence (Pick + Ban%)", field:"Presence (Pick + Ban%)", width:250},
+              {title:"Champion", field:"Champion", headerSort:false, width:200, headerFilter:true, },
+              {title:"# Picks", field:"# Picks", width:100},
+              {title:"# Bans", field:"# Bans", width:100},   
+              {title:"Win Rate", field:"Win Rate", width:200},
+              {title:"Average KDA", field:"Average KDA", width:250},
+              
+            ],
+          })
+
+
+        })// end of SuccessHandler for jsData
+        .withFailureHandler((er) => {
+
+        })// end of SuccessHandler for jsData
+        .getData()
+      }
+
+
+    </script>
+  </body>
+</html>
